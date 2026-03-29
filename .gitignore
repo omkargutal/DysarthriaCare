@@ -16,3 +16,4 @@ torgo_data/dysarthria_female/
 torgo_data/dysarthria_male/
 torgo_data/non_dysarthria_female/
 torgo_data/non_dysarthria_male/
+torgo_data/*.zip
