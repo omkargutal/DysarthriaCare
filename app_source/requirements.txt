@@ -1,0 +1,16 @@
+pandas
+numpy
+librosa
+scikit-learn
+matplotlib
+seaborn
+tqdm
+streamlit
+joblib
+jupyter
+notebook
+ipython
+SpeechRecognition
+gTTS
+pydub
+ffmpeg
