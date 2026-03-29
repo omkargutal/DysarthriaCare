@@ -1,0 +1,18 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.pyc
+
+# Environment variables
+.env
+
+# Virtual environments
+venv/
+
+# macOS system files
+.DS_Store
+
+# Torgo dataset folders (large audio data)
+torgo_data/dysarthria_female/
+torgo_data/dysarthria_male/
+torgo_data/non_dysarthria_female/
+torgo_data/non_dysarthria_male/
