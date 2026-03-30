@@ -90,6 +90,18 @@ def phone_mode(audio_path, lang='en'):
         return "clear_call.mp3"
 ```
 
+### ⚠️ Streamlit Cloud Deployment Notes
+
+If you are deploying this Streamlit app to **Streamlit Community Cloud**, keep these environment differences in mind:
+
+1. **System Dependencies (`ffmpeg`)**: The `pydub` library requires `ffprobe` and `ffmpeg` to parse audio. You **must** create a `packages.txt` file in the root of your GitHub repository with the text `ffmpeg` to install these dependencies on the server.
+2. **Dynamic Artifact Paths**: Streamlit Cloud runs your app from the repository root. If your script is inside `app_source/`, relative paths like `'artifacts/scaler.pkl'` will fail. Always construct absolute paths dynamically using `__file__`:
+   ```python
+   import os, joblib
+   base_dir = os.path.dirname(os.path.abspath(__file__))
+   scaler = joblib.load(os.path.join(base_dir, 'artifacts', 'scaler.pkl'))
+   ```
+
 ---
 
 ## 4. 🤖 Android App Integration
