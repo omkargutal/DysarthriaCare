@@ -84,7 +84,8 @@ TRANSLATIONS = {
         "phone_tip": "💡 Tip: Put phone on speaker, then play this audio near the mic.",
         "ai_powered": "AI Powered",
         "integration": "Integration",
-        "voice_only": "Voice Only"
+        "voice_only": "Voice Only",
+        "clear_reset": "🔄 Clear / Reset Recording"
     },
     "हिंदी (Hindi)": {
         "title": "भाषिणी ब्रिज (BhasiniBridge)",
@@ -144,7 +145,8 @@ TRANSLATIONS = {
         "phone_tip": "💡 सलाह: फोन को स्पीकर पर रखें, फिर इस ऑडियो को माइक के पास बजाएं।",
         "ai_powered": "AI संचालित",
         "integration": "एकीकरण",
-        "voice_only": "केवल आवाज़"
+        "voice_only": "केवल आवाज़",
+        "clear_reset": "🔄 साफ़ करें / नया रिकॉर्ड करें"
     },
     "मराठी (Marathi)": {
         "title": "भाषिणी ब्रिज (BhasiniBridge)",
@@ -203,7 +205,8 @@ TRANSLATIONS = {
         "phone_tip": "💡 टीप: फोन स्पीकरवर ठेवा, मग हा ऑडिओ माईकजवळ वाजवा.",
         "ai_powered": "AI समर्थित",
         "integration": "एकीकरण",
-        "voice_only": "फक्त आवाज"
+        "voice_only": "फक्त आवाज",
+        "clear_reset": "🔄 साफ करा / नवीन रेकॉर्ड करा"
     },
     "தமிழ் (Tamil)": {
         "title": "பாஷினி பிரிட்ஜ் (BhasiniBridge)",
@@ -257,7 +260,8 @@ TRANSLATIONS = {
         "play_near_mic": "🔊 தெளிவான பேச்சை ஒலிக்கவும் — போனை ஸ்பೀக்கர் அருகில் வைக்கவும்:",
         "ai_powered": "AI மூலம்",
         "integration": "ஒருங்கிணைப்பு",
-        "voice_only": "குರல் மட்டும்"
+        "voice_only": "குರல் மட்டும்",
+        "clear_reset": "🔄 அழிக்கவும் / புதிய பதிவு"
     },
     "తెలుగు (Telugu)": {
         "title": "భాషిని బ్రిడ్జ్ (BhasiniBridge)",
@@ -299,7 +303,8 @@ TRANSLATIONS = {
         "active_call": "యాక్టివ్ కాల్ మోడ్",
         "ai_powered": "AI పవర్డ్",
         "integration": "ఇంటిగ్రేషన్",
-        "voice_only": "వాయిస్ మాత్రమే"
+        "voice_only": "వాయిస్ మాత్రమే",
+        "clear_reset": "🔄 రికార్డింగ్ క్లియర్ చేసి రీసెట్ చేయండి"
     },
     "ಕನ್ನಡ (Kannada)": {
         "title": "ಭಾಷಿಣಿ ಬ್ರಿಡ್ಜ್ (BhasiniBridge)",
@@ -341,14 +346,15 @@ TRANSLATIONS = {
         "active_call": "ಸಕ್ರಿಯ ಕರೆ ಮೋಡ್",
         "ai_powered": "AI ಶಕ್ತಿ",
         "integration": "ಸಂಯೋಜನೆ",
-        "voice_only": "ಧ್ವನಿ ಮಾತ್ರ"
+        "voice_only": "ಧ್ವನಿ ಮಾತ್ರ",
+        "clear_reset": "🔄 ರೆಕಾರ್ಡಿಂಗ್ ಅನ್ನು ಅಳಿಸಿ / ಮರುಹೊಂದಿಸಿ"
     }
 }
 
 def _t(key, **kwargs):
     """Helper function to get translated text."""
     lang = st.session_state.get('language', 'English')
-    text = TRANSLATIONS.get(lang, TRANSLATIONS['English']).get(key, key)
+    text = TRANSLATIONS.get(lang, TRANSLATIONS['English']).get(key, TRANSLATIONS['English'].get(key, key))
     if kwargs:
         return text.format(**kwargs)
     return text
@@ -590,6 +596,12 @@ if 'app_state' not in st.session_state:
     st.session_state.app_state = 'language_selection'
 if 'language' not in st.session_state:
     st.session_state.language = 'English'
+if 'f2f_key' not in st.session_state:
+    st.session_state.f2f_key = 0
+if 'wa_key' not in st.session_state:
+    st.session_state.wa_key = 0
+if 'phone_key' not in st.session_state:
+    st.session_state.phone_key = 0
 
 # ──────────────────────────────────────────────────────────────────
 # Core ML & Audio Processing Functions
@@ -673,7 +685,7 @@ def generate_clear_speech(text, language_key):
 def get_audio_download_link(audio_bytes, filename="clear_speech.mp3"):
     """Generate a download link for audio bytes."""
     b64 = base64.b64encode(audio_bytes).decode()
-    return f'<a class="download-link" href="data:audio/mp3;base64,{b64}" download="{filename}">⬇️ Download Clear Audio</a>'
+    return f'<a class="download-link" href="data:audio/mpeg;base64,{b64}" download="{filename}">⬇️ Download Clear Audio</a>'
 
 def get_whatsapp_share_link(text):
     """Generate a WhatsApp share link with the transcribed text."""
@@ -894,7 +906,7 @@ def render_face_to_face():
     st.markdown("<br>", unsafe_allow_html=True)
     
     # Audio input
-    audio_value = st.audio_input(_t("tap_to_speak"), key="f2f_audio")
+    audio_value = st.audio_input(_t("tap_to_speak"), key=f"f2f_audio_{st.session_state.f2f_key}")
     
     if audio_value is not None:
         audio_bytes = audio_value.getvalue()
@@ -927,7 +939,7 @@ def render_face_to_face():
             
             # Play the clear audio
             st.markdown(f'<p style="color: #10b981; font-weight: 600; font-size: 0.85rem; margin-top: 16px;">{_t("play_listener")}</p>', unsafe_allow_html=True)
-            st.audio(result['clear_audio'], format="audio/mp3", autoplay=True)
+            st.audio(result['clear_audio'], format="audio/mpeg", autoplay=True)
             
         elif result and result.get('transcribed_text') and not result.get('is_dysarthric'):
             st.markdown("---")
@@ -948,7 +960,13 @@ def render_face_to_face():
             """, unsafe_allow_html=True)
             
             if result.get('clear_audio'):
-                st.audio(result['clear_audio'], format="audio/mp3")
+                st.audio(result['clear_audio'], format="audio/mpeg")
+                
+        st.markdown("<br>", unsafe_allow_html=True)
+        if st.button(_t("clear_reset"), key=f"reset_f2f_{st.session_state.f2f_key}", use_container_width=True):
+            st.session_state.f2f_key += 1
+            st.rerun()
+            
     else:
         # Instructions
         st.markdown(f"""
@@ -990,7 +1008,7 @@ def render_whatsapp_mode():
     
     st.markdown("<br>", unsafe_allow_html=True)
     
-    audio_value = st.audio_input(_t("tap_to_speak"), key="wa_audio")
+    audio_value = st.audio_input(_t("tap_to_speak"), key=f"wa_audio_{st.session_state.wa_key}")
     
     if audio_value is not None:
         audio_bytes = audio_value.getvalue()
@@ -1022,7 +1040,7 @@ def render_whatsapp_mode():
             
             # Play clear audio
             st.markdown(f'<p style="color: #10b981; font-weight: 600; font-size: 0.85rem; margin-top: 16px;">{_t("wa_preview")}</p>', unsafe_allow_html=True)
-            st.audio(result['clear_audio'], format="audio/mp3")
+            st.audio(result['clear_audio'], format="audio/mpeg")
             
             st.markdown("<br>", unsafe_allow_html=True)
             
@@ -1039,6 +1057,11 @@ def render_whatsapp_mode():
             
             st.markdown("<br>", unsafe_allow_html=True)
             st.markdown(f'<p style="color: #64748b; font-size: 0.8rem; text-align: center;">{_t("wa_tip")}</p>', unsafe_allow_html=True)
+            
+        st.markdown("<br>", unsafe_allow_html=True)
+        if st.button(_t("clear_reset"), key=f"reset_wa_{st.session_state.wa_key}", use_container_width=True):
+            st.session_state.wa_key += 1
+            st.rerun()
     
     else:
         st.markdown(f"""
@@ -1089,7 +1112,7 @@ def render_phone_mode():
     
     st.markdown("<br>", unsafe_allow_html=True)
     
-    audio_value = st.audio_input(_t("tap_to_speak"), key="phone_audio")
+    audio_value = st.audio_input(_t("tap_to_speak"), key=f"phone_audio_{st.session_state.phone_key}")
     
     if audio_value is not None:
         audio_bytes = audio_value.getvalue()
@@ -1121,10 +1144,15 @@ def render_phone_mode():
             
             # Play clear audio — the user holds the phone to the speaker
             st.markdown(f'<p style="color: #a855f7; font-weight: 600; font-size: 0.85rem; margin-top: 16px;">{_t("play_near_mic")}</p>', unsafe_allow_html=True)
-            st.audio(result['clear_audio'], format="audio/mp3", autoplay=True)
+            st.audio(result['clear_audio'], format="audio/mpeg", autoplay=True)
             
             st.markdown(f'<p style="color: #64748b; font-size: 0.8rem; text-align: center; margin-top: 12px;">{_t("phone_tip")}</p>', unsafe_allow_html=True)
-    
+
+        st.markdown("<br>", unsafe_allow_html=True)
+        if st.button(_t("clear_reset"), key=f"reset_phone_{st.session_state.phone_key}", use_container_width=True):
+            st.session_state.phone_key += 1
+            st.rerun()
+            
     else:
         st.markdown(f"""
         <div style="margin-top: 40px;">
