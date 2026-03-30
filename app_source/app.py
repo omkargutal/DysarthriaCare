@@ -611,8 +611,11 @@ if 'phone_key' not in st.session_state:
 def load_ml_artifacts():
     """Load the trained dysarthria classification model and scaler."""
     try:
-        scaler = joblib.load('artifacts/scaler.pkl')
-        model = joblib.load('artifacts/dysarthria_model.pkl')
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        scaler_path = os.path.join(base_dir, 'artifacts', 'scaler.pkl')
+        model_path = os.path.join(base_dir, 'artifacts', 'dysarthria_model.pkl')
+        scaler = joblib.load(scaler_path)
+        model = joblib.load(model_path)
         return scaler, model
     except Exception as e:
         st.error(f"Error loading ML artifacts: {e}")
