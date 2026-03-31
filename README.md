@@ -17,6 +17,35 @@ BhasiniBridge bridges the communication gap for these individuals using AI.
 
 ---
 
+## 🖼️ Application Preview
+
+### 🖥️ User Interface Structure
+The application features a clean, intuitive interface for selecting languages and communication modes.
+
+<div align="center">
+  <img src="Assets/Home Preview/Choose Language.png" width="45%" alt="Choose Language">
+  <img src="Assets/Home Preview/Select Mode.png" width="45%" alt="Select Mode">
+</div>
+
+### 🔊 Sample Voice Results
+Listen to how BhasiniBridge enhances dysarthric speech into clear, natural audio across different languages:
+
+| Language | Sample Enhanced Audio |
+|----------|----------------------|
+| **English** | <audio controls src="Assets/Sample Results/bhasini_clear_message[English].mp3"></audio> |
+| **Hindi** | <audio controls src="Assets/Sample Results/bhasini_clear_message[Hindi].mp3"></audio> |
+| **Marathi** | <audio controls src="Assets/Sample Results/bhasini_clear_message[Marathi].mp3"></audio> |
+| **Kannada** | <audio controls src="Assets/Sample Results/bhasini_clear_message[kannada].mp3"></audio> |
+| **Tamil** | <audio controls src="Assets/Sample Results/bhasini_clear_message[tamil].mp3"></audio> |
+
+---
+
+**Kaggle Dataset Card: Dysarthria Detection**
+**Dataset Title:** TORGO Database – Acoustic and Articulatory Speech from Speakers with Dysarthria
+**Description:** This dataset comprises acoustic and articulatory speech recordings collected from individuals diagnosed with dysarthria, supporting research in speech impairment analysis and detection.
+**Access Link:** [https://www.kaggle.com/datasets/iamhungundji/dysarthria-detection](https://www.kaggle.com/datasets/iamhungundji/dysarthria-detection)
+
+---
 ## ✨ Key Features
 
 | Feature | Description |
